@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Deza Store - Top Up Robux</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{box-sizing:border-box;font-family:Arial}
+body{margin:0;background:#f2f2f2;overflow-x:hidden}
+
+header{
+background:#fff;
+padding:15px;
+text-align:center;
+font-weight:bold;
+font-size:20px;
+border-bottom:1px solid #ddd;
+}
+
+.container{max-width:480px;margin:auto;padding:10px}
+
+.card{
+background:#fff;
+border-radius:10px;
+padding:15px;
+margin-bottom:15px;
+box-shadow:0 1px 6px rgba(0,0,0,.1);
+}
+
+input{
+width:100%;
+padding:11px;
+margin-top:6px;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+input.error{
+border:2px solid red;
+animation:shake .3s;
+}
+
+@keyframes shake{
+0%{transform:translateX(0)}
+25%{transform:translateX(-5px)}
+50%{transform:translateX(5px)}
+75%{transform:translateX(-5px)}
+100%{transform:translateX(0)}
+}
+
+.btn{
+margin-top:10px;
+padding:12px;
+background:#e6e6e6;
+border-radius:6px;
+text-align:center;
+font-weight:bold;
+cursor:pointer;
+transition:.2s;
+}
+
+.btn:hover{background:#d4d4d4}
+
+.pack{
+display:flex;
+justify-content:space-between;
+padding:10px;
+border:1px solid #ddd;
+border-radius:6px;
+margin-top:8px;
+cursor:pointer;
+}
+.pack:hover{background:#f3f3f3}
+
+#harga{margin-top:10px;font-weight:bold}
+
+/* LOADING */
+#loading{
+position:fixed;
+top:0;left:0;
+width:100%;height:100%;
+background:rgba(0,0,0,.5);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:99;
+}
+.loader{
+width:70px;height:70px;
+border-radius:50%;
+background:#eee;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:bold;
+animation:spin 1s linear infinite;
+}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+
+/* BUNGA */
+.flower{
+position:fixed;
+top:-40px;
+font-size:20px;
+animation:fall 8s linear infinite;
+opacity:.6;
+}
+@keyframes fall{
+0%{transform:translateY(-50px)}
+100%{transform:translateY(110vh)}
+}
+</style>
+</head>
+
+<body>
+
+<header>DEZA STORE — TOP UP ROBUX</header>
+
+<div class="container">
+
+<div class="card">
+<h3>🛒 Order Robux</h3>
+
+<input id="user" placeholder="Username Roblox">
+
+<h4>Pilih Paket</h4>
+<div class="pack" onclick="pilih(50)">50 Robux</div>
+<div class="pack" onclick="pilih(100)">100 Robux</div>
+<div class="pack" onclick="pilih(250)">250 Robux</div>
+<div class="pack" onclick="pilih(500)">500 Robux</div>
+
+<input id="jumlah" type="number" placeholder="Atau isi manual" oninput="hitung()">
+
+<p id="harga">Harga: Rp 0</p>
+
+<div class="btn" onclick="order()">Order Sekarang</div>
+</div>
+
+<div class="card">
+<h3>📢 Saluran Resmi</h3>
+<div class="btn" onclick="playClick();window.open('https://whatsapp.com/channel/0029Vb7RHYLChq6OlHXMv02m')">
+Gabung Channel WhatsApp
+</div>
+</div>
+
+</div>
+
+<div id="loading"><div class="loader">R$</div></div>
+
+<!-- SOUND -->
+<audio id="clickSound">
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_0a4f8c7a63.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+function playClick(){
+document.getElementById("clickSound").play();
+}
+
+function pilih(jml){
+playClick();
+document.getElementById("jumlah").value = jml;
+hitung();
+}
+
+function hitung(){
+let j = document.getElementById("jumlah").value;
+let harga = j * 170;
+document.getElementById("harga").innerText =
+"Harga: Rp " + harga.toLocaleString("id-ID");
+}
+
+function order(){
+playClick();
+
+let u = document.getElementById("user");
+let j = document.getElementById("jumlah");
+
+if(u.value=="" || j.value=="" || j.value<=0){
+u.classList.add("error");
+j.classList.add("error");
+alert("Lengkapi data terlebih dahulu!");
+return;
+}
+
+document.getElementById("loading").style.display="flex";
+
+setTimeout(()=>{
+let harga = j.value * 170;
+let pesan =
+`Halo MinDez, saya mau order Robux Nih
+
+Username: ${u.value}
+Jumlah: ${j.value}
+Harga: Rp ${harga.toLocaleString("id-ID")}`;
+
+window.open("https://wa.me/6287897493566?text="+encodeURIComponent(pesan));
+document.getElementById("loading").style.display="none";
+},1200);
+}
+
+/* BUNGA */
+for(let i=0;i<15;i++){
+let f=document.createElement("div");
+f.className="flower";
+f.innerHTML="❀";
+f.style.left=Math.random()*100+"vw";
+f.style.animationDuration=(5+Math.random()*5)+"s";
+document.body.appendChild(f);
+}
+</script>
+
+</body>
+</html>
